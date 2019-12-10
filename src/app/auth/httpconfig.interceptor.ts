@@ -16,10 +16,10 @@ import { ErrorDialogService } from './errordialog.service';
 export class HttpConfigInterceptor implements HttpInterceptor {
     constructor(public errorDialogService: ErrorDialogService) { }
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const token: string = localStorage.getItem('token');
+        const token: string = window.sessionStorage.get('token');
 
         if (token) {
-            request = request.clone({ headers: request.headers.set('Authorization', 'Bearer ' + token) });
+            request = request.clone({ headers: request.headers.set('Authorization',token) });
         }
 
         if (!request.headers.has('Content-Type')) {

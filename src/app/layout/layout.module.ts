@@ -18,7 +18,8 @@ import { FooterComponent } from './footer/footer.component';
         FooterComponent
     ],
     providers: [
-
-    ]
+        
+    ],
+    
 })
 export class LayoutModule { }
