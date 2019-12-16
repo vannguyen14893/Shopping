@@ -12,4 +12,10 @@ export class UserService extends AuthService {
     getUser(filter): Observable<any> {
         return this.post(this.api + '/read-all-user', filter);
     }
+    count(filter): Observable<any>{
+        return this.post(this.api + '/count', filter);
+    }
+    deleteUser(ids:any): Observable<any>{
+      return this.post(this.api + '/delete-user',ids);
+    }
 }

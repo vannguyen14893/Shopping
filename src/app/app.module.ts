@@ -6,6 +6,10 @@ import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { LayoutModule } from './layout/layout.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http'
+import { NotifierModule } from 'angular-notifier';
+import {AutoCompleteModule} from 'primeng/autocomplete';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -16,8 +20,14 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     BrowserModule,
     AppRoutingModule,
     AuthModule,
-    LayoutModule
+    LayoutModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    AutoCompleteModule,
+    
   ],
+
   providers: [],
   bootstrap: [AppComponent]
 })

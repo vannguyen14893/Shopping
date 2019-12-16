@@ -8,12 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserComponent implements OnInit {
 
-  constructor() { 
-    console.log('UserComponent -> constructor');
+  constructor() {
+
   }
 
   ngOnInit() {
-    console.log('UserComponent -> ngOnInit');    
+
   }
 
 }

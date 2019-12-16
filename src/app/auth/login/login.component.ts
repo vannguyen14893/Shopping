@@ -31,17 +31,15 @@ export class LoginComponent implements OnInit {
     }
     _login(login) {
         this.authService.login(login).subscribe(data => {
-            
-                this.router.navigateByUrl('/layout');
-                let token = data['token']
-                window.sessionStorage.setItem('token', token);
-                this.router.navigateByUrl('/login');
-               
-            
-        }),(error:HttpErrorResponse)=>{
+
+            this.router.navigateByUrl('/layout');
+            let token = data['token']
+            window.sessionStorage.setItem('token', token);
+
+        }), (error: HttpErrorResponse) => {
             console.log(error.error);
         }
-        }
     }
+}
 
 

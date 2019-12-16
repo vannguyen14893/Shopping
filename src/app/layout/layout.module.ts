@@ -11,6 +11,7 @@ import { FooterComponent } from './footer/footer.component';
         CommonModule,
         LayoutRoutingModule,
         UserModule
+        
     ],
     declarations: [
         LayoutComponent,

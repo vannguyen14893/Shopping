@@ -1,1 +1,89 @@
-<p>view user</p>
+<div>
+    <div class="row">
+        <div class="col-md-12">
+            <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit(checkoutForm.value)">
+                <!-- <p-autoComplete formControlName="name" [suggestions]="results" (completeMethod)="search($event)" [minLength]="1"
+                            [size]="30"></p-autoComplete> -->
+                <div class="row" style="margin-bottom: 30px;">
+                    <div class="col-md-3">
+                        <span style="margin-right: 10px;">Name:</span>
+                        <input type="text" class="form-control" formControlName="name"
+                            style="display: inline-block;width: 70%">
+                    </div>
+                    <div class="col-md-3">
+                        <span style="margin-right: 10px;">Birth Day:</span>
+                        <p-calendar formControlName="date" [style]="{'width':'70%'}" selectionMode="multiple"
+                            [showIcon]="true" [readonlyInput]="true"></p-calendar>
+                        <!-- <input type="text" class="form-control" formControlName="email"
+                            style="display: inline-block;width: 70%"> -->
+                    </div>
+                    <div class="col-md-3">
+                        <span style="margin-right: 10px;">Status:</span>
+                        <select class="form-control" style="display: inline-block;width: 70%"
+                            (change)="_changeStatus($event.target.value)">
+                            <option value="">Select</option>
+                            <option value="0">Inactive</option>
+                            <option value="1">Active</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="button" type="submit" class="btn btn-success">Search</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-danger" *ngIf="checkToogleButton" (click)="deleteMultiProduct()">Delete All</button>
+    </div>
+    <p-table class="some-custom-class-name" [value]="users" [rows]="5" [totalRecords]="totalRows" [lazy]="true"
+        [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,15]" (onLazyLoad)="loadCustomersLazy($event)"
+        [responsive]="true">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 45px;">
+                    <input style="width: 17px ;height: 17px" type="checkbox" [(ngModel)]="masterSelected"
+                        name="list_name" value="m1" (change)="checkUncheckAll()">
+                </th>
+                <th style="width: 50px;"><i class="fa fa-fw fa-sort" (click)="sortField('id')"></i></th>
+                <th>FullName<i class="fa fa-fw fa-sort" (click)="sortField('fullName')"></i></th>
+                <th style="width: 230px;">Email<i class="fa fa-fw fa-sort" (click)="sortField('email')"></i></th>
+                <th>Mobile</th>
+                <th>BirthDay</th>
+                <th>Role</th>
+                <th style="width: 70px;">Status<i class="fa fa-fw fa-sort" (click)="sortFieldStatus('status')"></i></th>
+                <th style="width: 107px">Action</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-u>
+            <tr>
+                <td>
+                    <input style="width: 17px ;height: 17px" type="checkbox" [(ngModel)]="u.isSelected" name="list_name"
+                        value="{{u.id}}" (change)="isAllSelected()" (click)="_click($event)">
+                </td>
+                <td>{{u.id}}</td>
+                <td>{{u.fullName}}</td>
+                <td>{{u.email}}</td>
+                <td>{{u.mobile}}</td>
+                <td>{{u.birthDay | date}}</td>
+                <td>
+                    <ul *ngFor="let r of u.roles">
+                        <li>{{r.roleName}}</li>
+                    </ul>
+                </td>
+                <td>
+                    <span [ngClass]="checkStatus(u.status)">{{u.status==0 ? 'InActive':'Active'}}
+                    </span></td>
+                <td>
+                    <button class="btn" (click)="deleteSingeProduct()" [disabled]="!u.isSelected"><i
+                            class="fa fa-trash"></i></button>
+                    <button class="btn" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil-square-o"></i>
+                        <edit-user></edit-user>
+                    </button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <notifier-container></notifier-container>
+</div>

@@ -3,4 +3,9 @@ export class SortFilter {
     pageSize: number;
     sort: boolean;
     sortName: string;
+    fullName:string;
+    sortStatus:string;
+    status:number;
+    startDate:string;
+    endDate:string;
 }
