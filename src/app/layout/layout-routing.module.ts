@@ -1,3 +1,4 @@
+import { SettingModule } from './setting/setting.module';
 
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -11,6 +12,8 @@ const routes: Routes = [
         component: LayoutComponent,
         children: [
             { path: 'user', loadChildren: () => UserModule },
+            { path: 'setting', loadChildren: () => SettingModule },
+            { path: '', pathMatch: 'full', redirectTo: 'user' },
         ]
     }
 ];

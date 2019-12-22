@@ -1,0 +1,12 @@
+<nav class="navbar navbar-expand-lg navbar-light " style="margin: 0 400px;">
+
+<div class=" collapse navbar-collapse" id="navbarNav">
+  <ul class="navbar-nav">
+    <li class="nav-item" *ngFor="let menu of menus">
+      <a class="nav-link" routerLink="{{menu.name}}" style="margin-right: 20px">{{menu.name | uppercase}}</a>
+    </li>
+  </ul>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>

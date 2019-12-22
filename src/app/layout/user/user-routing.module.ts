@@ -14,8 +14,8 @@ const routes: Routes = [
     children: [
 
       { path: 'list', pathMatch: 'full', component: UserListComponent },
-      { path: ':id',pathMatch: 'full', component: DetailUserComponent },
-      { path: 'update/:id',pathMatch: 'full', component: EditUserComponent },
+      { path: ':id', pathMatch: 'full', component: DetailUserComponent },
+      { path: 'update/:id', pathMatch: 'full', component: EditUserComponent },
       { path: '', pathMatch: 'full', redirectTo: 'list' },
     ]
   }

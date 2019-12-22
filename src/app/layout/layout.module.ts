@@ -1,3 +1,4 @@
+import { SettingModule } from './setting/setting.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { LayoutComponent } from './layout.component';
@@ -7,20 +8,21 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        LayoutRoutingModule,
-        UserModule
-        
-    ],
-    declarations: [
-        LayoutComponent,
-        HeaderComponent,
-        FooterComponent
-    ],
-    providers: [
-        
-    ],
-    
+  imports: [
+    CommonModule,
+    LayoutRoutingModule,
+    UserModule,
+    SettingModule
+
+  ],
+  declarations: [
+    LayoutComponent,
+    HeaderComponent,
+    FooterComponent
+  ],
+  providers: [
+
+  ],
+
 })
 export class LayoutModule { }
