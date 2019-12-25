@@ -4,12 +4,14 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { PermissionComponent } from './permission.component';
 import { PermissionListComponent } from './list-permission/list-permission.component';
-
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 @NgModule({
   imports: [
     CommonModule,
-    PermissionRoutingModule
-
+    PermissionRoutingModule,
+    NzTableModule,
+    NzButtonModule
   ],
   declarations: [
     PermissionComponent,

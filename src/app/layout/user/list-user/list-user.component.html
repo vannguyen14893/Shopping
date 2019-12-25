@@ -82,12 +82,13 @@
     </div>
 
     <nz-table #filterTable [nzData]="users" [nzLoading]="isLoad" nzBordered nzSize="middle" [nzFrontPagination]="false"
-      [nzShowPagination]="true">
+      [nzShowPagination]="true" (nzCurrentPageDataChange)="currentPageDataChange($event)">
       <thead (nzSortChange)="sortField($event)" nzSingleSort>
         <tr>
-          <th><label nz-checkbox [(ngModel)]="masterSelected" name="list_name" value="m1"
-              (change)="checkUncheckAll()"></label></th>
+
           <!-- <th nzShowSort nzSortKey="id">#</th> -->
+          <th nzShowCheckbox [(nzChecked)]="isAllDisplayDataChecked" [nzIndeterminate]="isIndeterminate"
+            (nzCheckedChange)="checkAll($event)"></th>
           <th>Name</th>
           <th>Email</th>
           <th>Moblie</th>
@@ -102,9 +103,9 @@
       </thead>
       <tbody>
         <tr *ngFor="let data of filterTable.data">
-          <td><label nz-checkbox [(ngModel)]="data.isSelected" name="list_name" (change)="isAllSelected()"
-              (click)="_click($event)"></label></td>
-          <!-- <td>{{data.id}}</td> -->
+
+          <td nzShowCheckbox nzShowCheckbox [(nzChecked)]="mapOfCheckedId[data.id]" (nzCheckedChange)="refreshStatus()">
+            <!-- <td>{{data.id}}</td> -->
           <td>
             <ng-container *ngIf="!editCache[data.id]?.edit; else nameInputTpl">
               {{data.fullName}}

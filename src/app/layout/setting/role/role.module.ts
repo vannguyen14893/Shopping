@@ -4,12 +4,14 @@ import { RoleRoutingModule } from './role-routing.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RoleComponent } from './role-component';
-
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 @NgModule({
   imports: [
     CommonModule,
-    RoleRoutingModule
-
+    RoleRoutingModule,
+    NzTableModule,
+    NzButtonModule
   ],
   declarations: [
     RoleListComponent,

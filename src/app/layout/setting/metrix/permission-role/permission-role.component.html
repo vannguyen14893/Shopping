@@ -1,1 +1,25 @@
-<p>permission role</p>
+<section class="content" style="margin: 0 150px;">
+  <div class="box">
+    <div class="box-body">
+      <nz-table #basicTable nzShowPagination nzShowSizeChanger [nzData]="privileges">
+        <thead>
+          <tr>
+            <th style="text-align: left">Permission/Role</th>
+            <th *ngFor="let role of roles">{{ role.roleName }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let m of basicTable.data">
+            <td>{{m.name | uppercase}}</td>
+            <td *ngFor="let role of roles " style="width: 30px;text-align: center">
+              <label class="container">
+                <input type="checkbox" [checked]="isCheck(role.id,m.id)" (change)="onSelect(role.id,m.id,$event)">
+                <span class="checkmark"></span>
+              </label>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</section>

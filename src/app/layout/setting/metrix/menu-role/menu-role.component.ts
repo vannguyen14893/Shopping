@@ -23,8 +23,6 @@ export class MenuRoleComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.getAllMenu();
-    this.getAllRole();
     this.getMenuRole();
   }
   ngOnDestroy(): void {
@@ -32,31 +30,31 @@ export class MenuRoleComponent implements OnInit, OnDestroy {
       this.subcrition.unsubscribe();
     }
   }
-  getAllMenu() {
+  getMenuRole() {
+    this.settingService.getMenuRole().subscribe(data => {
+      this.menuRoles = data;
+    });
     this.settingService.getAllMenu().subscribe(data => {
       this.menus = data;
       this.totalRows = this.menus.length;
     });
-  }
-  getAllRole() {
     this.settingService.getAllRole().subscribe(data => {
       this.roles = data;
-    });
-  }
-  getMenuRole() {
-    this.settingService.getMenuRole().subscribe(data => {
-      this.menuRoles = data;
     });
   }
   onSelect(roleId: number, menuId: number, event) {
     if (event.target.checked === true) {
       this.status = true;
       this.subcrition = this.settingService.updateMenuRole(menuId, roleId, this.status).subscribe(data => {
+        this.getMenuRole();
       });
+
     } else {
       this.status = false;
       this.subcrition = this.settingService.updateMenuRole(menuId, roleId, this.status).subscribe(data => {
+        this.getMenuRole();
       });
+
     }
   }
   isCheck(roleID: number, menuID: number) {

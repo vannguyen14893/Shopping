@@ -10,7 +10,7 @@ export class SettingService extends AuthService {
     super(http);
   }
   public getMenuByParentId(id: number): Observable<any> {
-    return this.get(this.api + '/read-menu/' + id);
+    return this.post(this.api + '/read-menu/', id);
   }
   public getAllMenu(): Observable<any> {
     return this.get(this.api + '/read-all-menu');
@@ -23,5 +23,14 @@ export class SettingService extends AuthService {
   }
   public updateMenuRole(id: number, roleId: any, status: boolean): Observable<any> {
     return this.put(this.api + '/update-menu-role/' + id + '/status/' + status, roleId);
+  }
+  public getListPermission(): Observable<any> {
+    return this.get(this.api + '/list-priviege');
+  }
+  public getListPermissionRole(): Observable<any> {
+    return this.get(this.api + '/list-priviege-role');
+  }
+  public updatePrivilegeRole(id: number, roleId: any, status: boolean): Observable<any> {
+    return this.put(this.api + '/update-privilege-role/' + id + '/status/' + status, roleId);
   }
 }

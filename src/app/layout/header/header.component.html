@@ -6,8 +6,8 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
-      <li class="nav-item" *ngFor="let menu  of menus">
-        <a class="nav-link" routerLink="{{menu.name}}"
+      <li class="nav-item" *ngFor="let menu of menus">
+        <a class="nav-link" routerLink="{{menu.name}}" (click)="getMenuId(menu.id)"
           [state]="{ id:menu.id}">{{menu.name |uppercase}}</a>
       </li>
     </ul>

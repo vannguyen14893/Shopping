@@ -1,5 +1,5 @@
+import { AuthGuard } from './../auth/auth.guard';
 import { SettingModule } from './setting/setting.module';
-
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutComponent } from './layout.component';

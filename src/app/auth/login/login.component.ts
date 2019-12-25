@@ -15,6 +15,8 @@ export class LoginComponent implements OnInit {
   email = '';
   password = '';
   checkoutForm: any;
+  error: string;
+  message: string;
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
@@ -30,10 +32,18 @@ export class LoginComponent implements OnInit {
   }
   _login(login) {
     this.authService.login(login).subscribe(data => {
-
       this.router.navigateByUrl('/layout');
       const token = data.token;
       window.sessionStorage.setItem('token', token);
+    }, error => {
+      this.error = error;
+      console.log(this.error);
+      if (this.error['error']['message'] !== null) {
+        this.message = this.error['error']['message'];
+      } else {
+        this.email = this.error['error']['body']['email'];
+        this.password = this.error['error']['body']['password'];
+      }
 
     });
   }

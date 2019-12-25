@@ -1,8 +1,7 @@
 <section class="content" style="margin: 0 150px;">
   <div class="box">
     <div class="box-body">
-      <nz-table #basicTable [nzData]="menus" [nzPageIndex]="1" nzShowSizeChanger [nzPageSize]="5"
-        [nzPageSizeOptions]="[5,10,15]" [nzShowPagination]="true">
+      <nz-table #basicTable nzShowPagination nzShowSizeChanger [nzData]="menus">
         <thead>
           <tr>
             <th style="text-align: left">Menu/Role</th>

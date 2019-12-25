@@ -32,6 +32,11 @@ export class UserListComponent implements OnInit, OnDestroy {
   public subcrition: Subscription;
   editCache: { [key: string]: { edit: boolean; data: User } } = {};
   i = 0;
+  listOfDisplayData: User[] = [];
+  mapOfCheckedId: { [key: string]: boolean } = {};
+  isAllDisplayDataChecked = false;
+  isIndeterminate = false;
+  numberOfChecked = 0;
   constructor(
     private userService: UserService,
     private fb: FormBuilder,
@@ -49,7 +54,6 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.editCache[id].edit = true;
   }
   cancelEdit(id: number): void {
-
     const index = this.users.findIndex(item => item.id === id);
     this.editCache[id] = {
       data: { ...this.users[index] },
@@ -174,18 +178,18 @@ export class UserListComponent implements OnInit, OnDestroy {
         return 'badge badge-success';
     }
   }
-  checkUncheckAll() {
-    for (const user of this.users) {
-      user.isSelected = this.masterSelected;
-    }
-    this.getCheckedItemList();
+  currentPageDataChange($event: User[]): void {
+    this.listOfDisplayData = $event;
+    this.refreshStatus();
   }
-  isAllSelected() {
-    this.masterSelected = this.users.every(function (item: any) {
-      return item.isSelected === true;
-
-    });
-    this.getCheckedItemList();
+  checkAll(value: boolean): void {
+    this.listOfDisplayData.forEach(item => (this.mapOfCheckedId[item.id] = value));
+    this.refreshStatus();
+  }
+  refreshStatus(): void {
+    this.isAllDisplayDataChecked = this.listOfDisplayData.every(item => this.mapOfCheckedId[item.id]);
+    this.isIndeterminate =
+      this.listOfDisplayData.some(item => this.mapOfCheckedId[item.id]) && !this.isAllDisplayDataChecked;
   }
   _click(value) {
     this.deleteSinge = [];
@@ -218,13 +222,6 @@ export class UserListComponent implements OnInit, OnDestroy {
         this.notifier.notify('success', data.message + ' ' + data.status, '');
         this.viewUser(this.sortFilter);
       });
-    }
-
-    if (this.masterSelected) {
-      this.masterSelected = false;
-      this.checkUncheckAll();
-    } else {
-      this.checkUncheckAll();
     }
   }
   addUser(value) {

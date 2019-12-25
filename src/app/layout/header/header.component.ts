@@ -19,4 +19,10 @@ export class HeaderComponent implements OnInit {
       this.menus = data;
     });
   }
+  getMenuId(value) {
+    if (localStorage.getItem('menuId') !== null) {
+        localStorage.removeItem('menuId');
+    }
+    localStorage.setItem('menuId', value);
+  }
 }

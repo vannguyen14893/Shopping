@@ -1,3 +1,5 @@
+import { IdentityService } from './../auth/identity.service';
+import { AuthGuard } from './../auth/auth.guard';
 import { SettingModule } from './setting/setting.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -21,7 +23,8 @@ import { FooterComponent } from './footer/footer.component';
     FooterComponent
   ],
   providers: [
-
+    AuthGuard,
+    IdentityService
   ],
 
 })
