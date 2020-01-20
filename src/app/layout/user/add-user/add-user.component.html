@@ -1,88 +1,52 @@
-<form [formGroup]="checkoutForm" (ngSubmit)="submitForm()">
-    <div class="modal fade" id="myModal">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Add User</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body" style="margin: 33px 40px;" class="col-md-12">
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Add User" nzOkText="Ok" nzCancelText="Cancel" (nzOnOk)="handleOk()"
+  (nzOnCancel)="handleCancel()" nzWidth="700px">
+  <form [formGroup]="checkoutForm">
 
-                    <div class="row" style="margin-bottom: 30px;">
-                        <div class="col-md-5" style="display: flex;">
-                            <span style="margin-right: 10px;">Email:</span>
-                            <input nz-input placeholder="Name" formControlName="email" nzSize="default"
-                                style="display: inline-block;" />
-                        </div>
-                        <div class="col-md-5" style="display: flex;">
-                            <span style="margin-right: 10px;">Password:</span>
-                            <input nz-input placeholder="Password" formControlName="password" nzSize="default"
-                                style="display: inline-block;" />
-                        </div>
-                    </div>
-                    <div class="row" style="margin-bottom: 30px;">
-                        <div class="col-md-5" style="display: flex;">
-                            <span style="margin-right: 7px;">Name:</span>
-                            <input nz-input placeholder="Name" formControlName="fullName" nzSize="default"
-                                style="display: inline-block;" />
-                        </div>
-                        <div class="col-md-5" style="display: flex;">
-                            <span style="margin-right: 16px;">BirthDay:</span>
-                            <nz-date-picker formControlName="datePicker" style="display: inline-block;">
-                            </nz-date-picker>
-                        </div>
-                    </div>
-                    <div class="row" style="margin-bottom: 30px;">
-                        <div class="col-md-5" style="display: flex;">
-                            <span style="margin-right: 27px;">Sex:</span>
-                            <nz-radio-group formControlName="sex">
-                                <label nz-radio nzValue="true">Male</label>
-                                <label nz-radio nzValue="false">Female</label>
-                            </nz-radio-group>
-                        </div>
-                        <div class="col-md-5" style="display: flex;">
-                        </div>
-                    </div>
-                    <div class="row" style="margin-bottom: 30px;">
-                        <div class="col-md-8" style="display: flex;">
-                            <span style="margin-right: 27px;">Role:</span>
-                            <nz-checkbox-wrapper style="width: 100%;" (nzOnChange)="_click($event)">
-                                <label nz-checkbox nzValue="1">ADMIN</label>
-                                <label nz-checkbox nzValue="2">USER</label>
-                                <label nz-checkbox nzValue="3">MANAGEMENT</label>
-                                <label nz-checkbox nzValue="4">CO</label>
-                            </nz-checkbox-wrapper>
-                        </div>
-                        <div class="col-md-4" style="display: flex;">
-                        </div>
-                    </div>
-                    <div class="row" style="margin-bottom: 30px;" formArrayName="groups">
-                        <div class="col-md-5" style="display: flex;"
-                            *ngFor="let g of checkoutForm.get('groups').controls; let i=index" [formGroupName]="i">
-                            <span style="margin-right: 7px;">Name:</span>
-                            <input nz-input placeholder="Name" formControlName="name" nzSize="default"
-                                style="display: inline-block;" />
-                        </div>
-                        <!-- <div class="col-md-5" style="display: flex;">
-                            <span style="margin-right: 16px;">BirthDay:</span>
-                            <input nz-input placeholder="Name" formControlName="name" nzSize="default"
-                                style="display: inline-block;" />
-                        </div> -->
-                    </div>
-                    <button nz-button nzType="secondary" (click)="addGroup()">Add</button>
-                    <button nz-button nzType="danger" (click)="deleteTeam(i)" *ngIf="checkoutForm.get('groups').controls.length > 1">x</button>
-                </div>
-                <div class="modal-footer">
-                    <button nz-button nzType="secondary" data-dismiss="modal">
-                        <span>Close</span>
-                    </button>
-                    <button nz-button nzType="primary" type="submit">
-                        <span>Save</span>
-                    </button>
-
-                </div>
-
-            </div>
-        </div>
+    <div class="row" style="margin-bottom: 30px;">
+      <div class="col-md-6" style="display: flex;">
+        <span style="margin-right: 10px;">Email:</span>
+        <input nz-input placeholder="Name" formControlName="email" nzSize="default" style="display: inline-block;" />
+      </div>
+      <div class="col-md-6" style="display: flex;">
+        <span style="margin-right: 10px;">Mobile:</span>
+        <input nz-input placeholder="Mobile" formControlName="mobile" nzSize="default"
+          style="display: inline-block;" />
+      </div>
     </div>
-</form>
+    <div class="row" style="margin-bottom: 30px;">
+      <div class="col-md-6" style="display: flex;">
+        <span style="margin-right: 7px;">Name:</span>
+        <input nz-input placeholder="Name" formControlName="fullName" nzSize="default" style="display: inline-block;" />
+      </div>
+      <div class="col-md-6" style="display: flex;">
+        <span style="margin-right: 2px;">BirthDay:</span>
+        <nz-date-picker formControlName="birthDay"  style="display: inline-block;">
+        </nz-date-picker>
+      </div>
+    </div>
+    <div class="row" style="margin-bottom: 30px;">
+      <div class="col-md-6" style="display: flex;">
+        <span style="margin-right: 27px;">Sex:</span>
+        <nz-radio-group formControlName="sex">
+          <label nz-radio nzValue="0">Male</label>
+          <label nz-radio nzValue="1">Female</label>
+        </nz-radio-group>
+      </div>
+      <div class="col-md-6" style="display: flex;">
+        <span style="margin-right: 30px;">Age:</span>
+        <nz-input-number [nzMin]="1" formControlName="age" [nzMax]="150" [nzStep]="1"></nz-input-number>
+      </div>
+    </div>
+    <div class="row" style="margin-bottom: 30px;">
+      <div class="col-md-8" style="display: flex;">
+        <span style="margin-right: 15px;">Role:</span>
+        <nz-select [(ngModel)]="multipleValue" [ngModelOptions]="{standalone: true}" [nzSize]="size" nzMode="multiple" nzPlaceHolder="Please select">
+          <nz-option *ngFor="let option of listOfOptionRole" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </div>
+      <div class="col-md-4" style="display: flex;">
+        <input type="file" class="form-control" (change)="onChangeAvatar($event)" accept=".jpg, .png, .jpeg">
+      </div>
+    </div>
+  </form>
+</nz-modal>

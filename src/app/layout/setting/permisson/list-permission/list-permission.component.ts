@@ -1,6 +1,7 @@
 import { Privilege } from './../../../../model/privilege.class';
-import { SettingService } from './../../setting.service';
+
 import { Component, OnInit } from '@angular/core';
+import { SettingService } from '../../setting.service';
 
 @Component({
   selector: 'app-permission-list',

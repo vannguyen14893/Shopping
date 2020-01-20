@@ -5,8 +5,12 @@ import { User } from 'src/app/model/user.class';
 import { FormBuilder } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { NotifierService } from 'angular-notifier';
-import { Subscription } from 'rxjs';
-
+import { Subscription, Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import * as fromUser from '../user-state/user-reducer';
+import * as actionUser from '../user-state/user-action';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { isTemplateRef } from 'ng-zorro-antd';
 @Component({
   selector: 'app-list-user',
   templateUrl: './list-user.component.html',
@@ -31,40 +35,33 @@ export class UserListComponent implements OnInit, OnDestroy {
   isLoad: boolean;
   public subcrition: Subscription;
   editCache: { [key: string]: { edit: boolean; data: User } } = {};
-  i = 0;
+  id: any;
   listOfDisplayData: User[] = [];
   mapOfCheckedId: { [key: string]: boolean } = {};
   isAllDisplayDataChecked = false;
   isIndeterminate = false;
   numberOfChecked = 0;
+  isVisible = false;
+  isVisibleEdit = false;
+  userEdit = new User();
+  arrUserId: any;
+  arrUser: any;
+  flag = true;
+  listDataChecked: User[] = [];
+  roleName: string;
+  roleNames: any;
   constructor(
     private userService: UserService,
     private fb: FormBuilder,
     public datepipe: DatePipe,
-    private notifier: NotifierService
+    private notifier: NotifierService,
+    private store: Store<fromUser.Appstate>,
   ) {
     this.checkoutForm = this.fb.group({
       name: '',
       date: '',
 
     });
-    this.getCheckedItemList();
-  }
-  startEdit(id: number): void {
-    this.editCache[id].edit = true;
-  }
-  cancelEdit(id: number): void {
-    const index = this.users.findIndex(item => item.id === id);
-    this.editCache[id] = {
-      data: { ...this.users[index] },
-      edit: false
-    };
-  }
-
-  saveEdit(id: number): void {
-    const index = this.users.findIndex(item => item.id === id);
-    Object.assign(this.users[index], this.editCache[id].data);
-    this.editCache[id].edit = false;
   }
 
   ngOnInit() {
@@ -81,53 +78,25 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.sortFilter.sort = true;
     this.sortFilter.sortName = 'id';
     this.viewUser(this.sortFilter);
-    this.updateEditCache();
   }
   ngOnDestroy(): void {
     if (this.subcrition) {
       this.subcrition.unsubscribe();
     }
   }
-  updateEditCache(): void {
-    this.users.forEach(item => {
-      this.editCache[item.id] = {
-        edit: false,
-        data: { ...item }
-      };
-    });
-  }
-  addRow(): void {
-    this.users = [
-      ...this.users,
-      {
-        id: 9999 + this.i,
-        fullName: null,
-        email: null,
-        mobile: null,
-        status: null,
-        birthDay: null,
-        roleName: null,
-        isSelected: null,
-        age: null,
-        sex: null,
-        password: null
-      }
-    ];
-    this.i++;
-    this.updateEditCache();
-  }
-  deleteRow(id: number): void {
-    this.users = this.users.filter(d => d.id !== id);
-  }
+
   onChangeRole(value) {
+    this.sortFilter.page = 1;
     this.sortFilter.roleIds = value;
     this.viewUser(this.sortFilter);
   }
   filterStatus(value) {
+    this.sortFilter.page = 1;
     this.sortFilter.status = value;
     this.viewUser(this.sortFilter);
   }
   onSubmit(customerData) {
+    this.sortFilter.page = 1;
     this.sortFilter.fullName = customerData.name;
     const startDate = this.datepipe.transform(customerData.date[0], 'yyyy-MM-dd');
     this.sortFilter.startDate = startDate;
@@ -137,20 +106,18 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   sortField(sort: { key: string; value: string }) {
+    this.sortFilter.page = 1;
     this.sortFilter.sortName = sort.key;
     this.sortFilter.sort = !this.sortFilter.sort;
     this.viewUser(this.sortFilter);
   }
   sortFieldStatus(name: string) {
+    this.sortFilter.page = 1;
     this.sortFilter.sortStatus = name;
     this.sortFilter.sort = !this.sortFilter.sort;
     this.viewUser(this.sortFilter);
   }
-  // loadCustomersLazy(event) {
-  //     this.sortFilter.pageSize = event.rows;
-  //     this.sortFilter.page = event.first;
-  //     this.viewUser(this.sortFilter);
-  // }
+
   changePage(value) {
     this.sortFilter.page = value;
     this.viewUser(this.sortFilter);
@@ -162,10 +129,12 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   viewUser(sortFilter: SortFilter) {
     this.isLoad = true;
-    this.userService.getUser(sortFilter).subscribe(data => {
-      this.users = data.users;
-      this.totalRows = data.count;
-      this.updateEditCache();
+    this.store.dispatch(new actionUser.LoadUsers(sortFilter));
+    this.store.pipe(select(fromUser.getUsers)).subscribe(data => {
+      this.users = data;
+      if (this.users.length > 0) {
+        this.totalRows = this.users[0].count;
+      }
       this.isLoad = false;
     });
 
@@ -178,56 +147,78 @@ export class UserListComponent implements OnInit, OnDestroy {
         return 'badge badge-success';
     }
   }
-  currentPageDataChange($event: User[]): void {
-    this.listOfDisplayData = $event;
-    this.refreshStatus();
-  }
+
   checkAll(value: boolean): void {
-    this.listOfDisplayData.forEach(item => (this.mapOfCheckedId[item.id] = value));
+    if (value === true) {
+      this.flag = false;
+    } else {
+      this.flag = true;
+    }
+    this.users.forEach(item => (this.mapOfCheckedId[item.id] = value));
     this.refreshStatus();
   }
   refreshStatus(): void {
-    this.isAllDisplayDataChecked = this.listOfDisplayData.every(item => this.mapOfCheckedId[item.id]);
+    this.listDataChecked = [];
+    this.isAllDisplayDataChecked = this.users.every(item => this.mapOfCheckedId[item.id]);
     this.isIndeterminate =
-      this.listOfDisplayData.some(item => this.mapOfCheckedId[item.id]) && !this.isAllDisplayDataChecked;
-  }
-  _click(value) {
-    this.deleteSinge = [];
-    this.deleteSinge.push(value.target.defaultValue);
-  }
-  getCheckedItemList() {
-    this.checkedList = [];
-    for (const user of this.users) {
-      if (user.isSelected) {
-        this.checkedList.push(user.id);
+      this.users.some(item => this.mapOfCheckedId[item.id]) && !this.isAllDisplayDataChecked;
+    this.users.forEach(item => {
+      if (this.listDataChecked.indexOf(item) === -1 && this.mapOfCheckedId[item.id]) {
+        this.listDataChecked.push(item);
+        if (this.listDataChecked.length > 0) {
+          this.flag = false;
+        } else {
+          this.flag = true;
+        }
+      } else if (this.listDataChecked.indexOf(item) >= 0 && !this.mapOfCheckedId[item.id]) {
+        this.listDataChecked.splice(this.listDataChecked.indexOf(item), 1);
       }
-    }
-    if (this.checkedList.length > 1) {
-      this.checkToogleButton = true;
-    }
-
-  }
-  deleteSingeProduct() {
-    this.subcrition = this.userService.deleteUser(this.deleteSinge).subscribe(data => {
-      this.notifier.notify('success', data.message + ' ' + data.status, '');
-      this.viewUser(this.sortFilter);
     });
   }
-
-  deleteMultiProduct() {
-    if (this.checkedList.length === 0) {
-      this.unCheck = true;
-    } else {
-      this.subcrition = this.userService.deleteUser(this.checkedList).subscribe(data => {
-        this.notifier.notify('success', data.message + ' ' + data.status, '');
-        this.viewUser(this.sortFilter);
-      });
-    }
+  showModalAdd(): void {
+    this.isVisible = true;
+  }
+  closeModalAdd(value) {
+    this.isVisible = value;
   }
   addUser(value) {
-    // this.user=value;
-    // this.subcrition = this.userService.addUser(this.user).subscribe(data => {
-    //     console.log(data);
-    // });
+    this.store.dispatch(new actionUser.AddUser(value));
+  }
+  showModalEdit(user: User) {
+    this.isVisibleEdit = true;
+    this.store.dispatch(new actionUser.GetUser(user.id));
+  }
+  closeModalEdit(value) {
+    this.isVisibleEdit = value;
+  }
+  editUser(value) {
+    this.store.dispatch(new actionUser.UpdateUser(value));
+  }
+
+  deleteSingle(id: number): void {
+    this.arrUserId = [];
+    this.arrUserId.push(id);
+    this.store.dispatch(new actionUser.DeleteUser(this.arrUserId));
+  }
+  updateSingleStatus(id: number): void {
+    this.arrUser = [];
+    this.arrUser.push(id);
+    this.store.dispatch(new actionUser.UpdateStatusUser(this.arrUser));
+    this.checkAll(false);
+  }
+  deleteMulti(): void {
+    this.arrUserId = [];
+    this.listDataChecked.forEach(item => this.arrUserId.push(item.id));
+    this.store.dispatch(new actionUser.DeleteUser(this.arrUserId));
+    this.checkAll(false);
+    this.flag = true;
+
+  }
+  updateMultiStatus(): void {
+    this.arrUser = [];
+    this.listDataChecked.forEach(item => this.arrUser.push(item.id));
+    this.store.dispatch(new actionUser.UpdateStatusUser(this.arrUser));
+    this.checkAll(false);
+    this.flag = true;
   }
 }

@@ -5,4 +5,36 @@ nz-select {
 .ant-input {
     width: 200px;
 }
-
+.col-name{
+    width:250px;
+}
+.col-email{
+    width:300px;
+}
+.col-age{
+    width:80px;
+}
+.col-gender{
+     width:80px;
+}
+.col-birthday{
+width:130px;
+}
+.col-moblie{
+width:150px;
+}
+.col-checkbox{
+    width:50px;
+}
+.col-status{
+   width:150px;
+}
+.icon-user{
+    display: inline-flex !important ;
+}
+.col-role{
+    width:150px;
+}
+.col-image{
+  width: 70px;
+}

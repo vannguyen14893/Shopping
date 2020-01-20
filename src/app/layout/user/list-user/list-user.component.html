@@ -1,55 +1,3 @@
-<!-- <div>
-        <button class="btn btn-danger" *ngIf="checkToogleButton" (click)="deleteMultiProduct()">Delete All</button>
-    </div> -->
-<!-- <p-table class="some-custom-class-name" [value]="users" [rows]="5" [totalRecords]="totalRows" [lazy]="true"
-        [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,15]" (onLazyLoad)="loadCustomersLazy($event)"
-        [responsive]="true">
-        <ng-template pTemplate="header">
-            <tr>
-                <th style="width: 45px;">
-                    <input style="width: 17px ;height: 17px" type="checkbox" [(ngModel)]="masterSelected"
-                        name="list_name" value="m1" (change)="checkUncheckAll()">
-                </th>
-                <th style="width: 50px;"><i class="fa fa-fw fa-sort" (click)="sortField('id')"></i></th>
-                <th>FullName<i class="fa fa-fw fa-sort" (click)="sortField('fullName')"></i></th>
-                <th style="width: 230px;">Email<i class="fa fa-fw fa-sort" (click)="sortField('email')"></i></th>
-                <th>Mobile</th>
-                <th>BirthDay</th>
-                <th>Role</th>
-                <th style="width: 70px;">Status<i class="fa fa-fw fa-sort" (click)="sortFieldStatus('status')"></i></th>
-                <th style="width: 107px">Action</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-u>
-            <tr>
-                <td>
-                    <input style="width: 17px ;height: 17px" type="checkbox" [(ngModel)]="u.isSelected" name="list_name"
-                        value="{{u.id}}" (change)="isAllSelected()" (click)="_click($event)">
-                </td>
-                <td>{{u.id}}</td>
-                <td>{{u.fullName}}</td>
-                <td>{{u.email}}</td>
-                <td>{{u.mobile}}</td>
-                <td>{{u.birthDay | date}}</td>
-                <td>
-                    <ul *ngFor="let r of u.roles">
-                        <li>{{r.roleName}}</li>
-                    </ul>
-                </td>
-                <td>
-                    <span [ngClass]="checkStatus(u.status)">{{u.status==0 ? 'InActive':'Active'}}
-                    </span></td>
-                <td>
-                    <button class="btn" (click)="deleteSingeProduct()" [disabled]="!u.isSelected"><i
-                            class="fa fa-trash"></i></button>
-                    <button class="btn" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil-square-o"></i>
-                        <edit-user></edit-user>
-                    </button>
-                </td>
-            </tr>
-        </ng-template>
-    </p-table> -->
-
 <div style="margin: 25px -1px;" class="body" class="col-md-12">
   <div>
     <div class="row">
@@ -66,7 +14,7 @@
             </div>
 
             <div class="col-md-2">
-              <button nz-button nzType="primary"><i nz-icon nzType="search"></i>Search</button>
+              <button nz-button nzType="primary"><i class="icon-user" nz-icon nzType="search"></i>Search</button>
             </div>
 
           </div>
@@ -78,129 +26,92 @@
                 <span>Add user</span>
             </button>
             <add-user (submit)="addUser($event)"></add-user> -->
-      <button nz-button (click)="addRow()" nzType="primary">Add</button>
+      <div>
+        <button nz-button nzType="primary" (click)="showModalAdd()"><i nz-icon nzType="plus" class="icon-user"
+            nzTheme="outline"></i>Add User</button>
+        <button *ngIf="!flag" nz-button nzType="danger" nz-popconfirm nzTitle="Sure to delete?"
+          (nzOnConfirm)="deleteMulti()">Delete</button>
+        <button *ngIf="!flag" nz-button nzType="primary" (click)="updateMultiStatus()">Change Status</button>
+      </div>
+      <!-- <button nz-button (click)="addRow()" nzType="primary">Add</button> -->
     </div>
 
-    <nz-table #filterTable [nzData]="users" [nzLoading]="isLoad" nzBordered nzSize="middle" [nzFrontPagination]="false"
-      [nzShowPagination]="true" (nzCurrentPageDataChange)="currentPageDataChange($event)">
+    <nz-table #filterTable [nzData]="users" [nzScroll]="{ x: '1400px', y: '500px' }" [nzLoading]="isLoad"
+      nzSize="middle" [nzFrontPagination]="false" [nzShowPagination]="true">
       <thead (nzSortChange)="sortField($event)" nzSingleSort>
         <tr>
 
           <!-- <th nzShowSort nzSortKey="id">#</th> -->
-          <th nzShowCheckbox [(nzChecked)]="isAllDisplayDataChecked" [nzIndeterminate]="isIndeterminate"
-            (nzCheckedChange)="checkAll($event)"></th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Moblie</th>
-          <th>BirthDay</th>
-          <th nzShowSort nzSortKey="age" nzWidth="50px">Age</th>
-          <th>Sex</th>
-          <!-- <th nzShowFilter [nzFilters]="roles" (nzFilterChange)="onChangeRole($event)">Role</th> -->
-          <th nzShowSort nzSortKey="status" nzShowFilter [nzFilterMultiple]="false" [nzFilters]="statuses"
-            (nzFilterChange)="filterStatus($event)" nzWidth="50px">Status</th>
+          <th class="col-checkbox" nzShowCheckbox [(nzChecked)]="isAllDisplayDataChecked"
+            [nzIndeterminate]="isIndeterminate" (nzCheckedChange)="checkAll($event)"></th>
+          <th>Avatar</th>
+          <th class="col-name">Name</th>
+          <th class="col-email">Email</th>
+          <th class="col-moblie">Moblie</th>
+          <th class="col-birthday">BirthDay</th>
+          <th class="col-age" nzShowSort nzSortKey="age">Age</th>
+          <th class="col-gender">Gender</th>
+          <th class="col-role" nzShowFilter [nzFilters]="roles" (nzFilterChange)="onChangeRole($event)">Role</th>
+          <th class="col-status" nzShowSort nzSortKey="status" nzShowFilter [nzFilterMultiple]="false"
+            [nzFilters]="statuses" (nzFilterChange)="filterStatus($event)" nzWidth="50px">Status</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of filterTable.data">
+          <td class="col-checkbox" nzShowCheckbox nzShowCheckbox [(nzChecked)]="mapOfCheckedId[data.id]"
+            (nzCheckedChange)="refreshStatus()">
+          <td class="col-image" *ngIf="data.avatar !==null">
+              <nz-avatar nzIcon="user"  nzSrc="http://localhost:8080/files/{{data.avatar}}"></nz-avatar>
+            </td>
+          <td class="col-image" *ngIf="data.avatar === null">
+            <nz-avatar nzIcon="user" style="background-color:#87d068;"></nz-avatar>
+          </td>
+          <td class="col-name">{{data.fullName}}</td>
+          <td class="col-email">{{data.email}}</td>
+          <td class="col-moblie">{{data.mobile}}</td>
+          <td class="col-birthday">{{data.birthDay | date :'dd-MM-yyyy'}}</td>
+          <td class="col-age">{{data.age }} </td>
+          <td class="col-gender">{{data.sex ===0 ? 'Male' :'Female'}} </td>
+          <td class="col-role">{{data.roleName}}</td>
+          <td class="col-status"><span [ngClass]="checkStatus(data.status)">{{data.status==0 ? 'InActive':'Active'}}
+            </span> </td>
 
-          <td nzShowCheckbox nzShowCheckbox [(nzChecked)]="mapOfCheckedId[data.id]" (nzCheckedChange)="refreshStatus()">
-            <!-- <td>{{data.id}}</td> -->
           <td>
-            <ng-container *ngIf="!editCache[data.id]?.edit; else nameInputTpl">
-              {{data.fullName}}
-            </ng-container>
-            <ng-template #nameInputTpl>
-              <input type="text" nz-input [(ngModel)]="editCache[data.id].data.fullName" />
-            </ng-template>
+            <i nz-icon nzType="edit" nz-tooltip nzTooltipTitle="Edit" nzTheme="outline" (click)="showModalEdit(data)"
+              style="font-size: 17px;margin-right: 15px;"></i>
+            <!-- <button nz-button nzType="primary" >Edit</button> -->
+            <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu" style="display: inline;">
+              <i nz-icon nzType="bars" nzTheme="outline" style="font-size: 17px;"></i>
+            </a>
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+              <ul nz-menu>
+                <!-- <li nz-menu-item>Assign</li> -->
+                <li [nzDisabled]="!flag" nz-menu-item class="line" nz-popconfirm nzTitle="Sure to delete?"
+                  (nzOnConfirm)="deleteSingle(data.id)">Delete
+                </li>
+                <!-- <li nz-menu-divider></li> -->
+                <li [nzDisabled]="!flag" nz-menu-item (click)="updateSingleStatus(data.id)">Change Status</li>
+              </ul>
+            </nz-dropdown-menu>
 
-          </td>
-          <td>
-            <ng-container *ngIf="!editCache[data.id]?.edit; else emailInputTpl">
-              {{data.email}}
-            </ng-container>
-            <ng-template #emailInputTpl>
-              <input type="text" nz-input [(ngModel)]="editCache[data.id].data.email" />
-            </ng-template>
-          </td>
-          <td>
-            <ng-container *ngIf="!editCache[data.id]?.edit; else mobileInputTpl">
-              {{data.mobile}}
-            </ng-container>
-            <ng-template #mobileInputTpl>
-              <input type="text" nz-input [(ngModel)]="editCache[data.id].data.mobile" />
-            </ng-template>
-          </td>
-          <td>
-            <ng-container *ngIf="!editCache[data.id]?.edit; else birthDayInputTpl">
-              {{data.birthDay | date}}
-            </ng-container>
-            <ng-template #birthDayInputTpl>
-              <nz-date-picker [(ngModel)]="editCache[data.id].data.birthDay">
-              </nz-date-picker>
-            </ng-template>
-          </td>
-          <td>
-            <ng-container *ngIf="!editCache[data.id]?.edit; else ageInputTpl">
-              {{data.age }}
-            </ng-container>
-            <ng-template #ageInputTpl>
-              <input type="number" nz-input [(ngModel)]="editCache[data.id].data.age" style="width: 100px;" />
-            </ng-template>
-          </td>
-          <td>
-            <ng-container *ngIf="!editCache[data.id]?.edit; else sexInputTpl">
-              {{data.sex ===0 ? 'Male' :'Female'}}
-            </ng-container>
-            <ng-template #sexInputTpl>
-              <nz-switch [(ngModel)]="editCache[data.id].data.sex" [nzCheckedChildren]="checkedTemplate"
-                [nzUnCheckedChildren]="unCheckedTemplate">
-              </nz-switch>
-              <ng-template #checkedTemplate><i nz-icon nzType="check"></i></ng-template>
-              <ng-template #unCheckedTemplate><i nz-icon nzType="close"></i></ng-template>
-            </ng-template>
-          </td>
-          <td>
-            <ng-container *ngIf="!editCache[data.id]?.edit; else statusInputTpl">
-              <span [ngClass]="checkStatus(data.status)">{{data.status==0 ? 'InActive':'Active'}}</span>
-            </ng-container>
-            <ng-template #statusInputTpl>
-              <nz-switch [(ngModel)]="editCache[data.id].data.status" [nzCheckedChildren]="checkedTemplate"
-                [nzUnCheckedChildren]="unCheckedTemplate">
-              </nz-switch>
-              <ng-template #checkedTemplate><i nz-icon nzType="check"></i></ng-template>
-              <ng-template #unCheckedTemplate><i nz-icon nzType="close"></i></ng-template>
-            </ng-template>
-          </td>
-          <td>
-
-            <div class="editable-row-operations">
-              <ng-container *ngIf="!editCache[data.id]?.edit; else saveTpl">
-                <button nz-button nzType="primary" (click)="startEdit(data.id)"
-                  style="margin-right: 15px;">Edit</button>
-              </ng-container>
-              <ng-template #saveTpl>
-                <button nz-button nzType="primary" style="margin-right: 10px;" (click)="saveEdit(data.id)">Save</button>
-                <button nz-button nzType="default" style="margin-right: 15px;" nz-popconfirm nzTitle="Sure to cancel?"
-                  (nzOnConfirm)="cancelEdit(data.id)">Cancel</button>
-              </ng-template>
-              <button nz-button nzType="danger" nz-popconfirm nzTitle="Sure to delete?"
-                (nzOnConfirm)="deleteRow(data.id)">Delete</button>
-            </div>
           </td>
         </tr>
       </tbody>
     </nz-table>
     <div style="float: right;margin-top: 10px">
-      <nz-pagination class="pagi-ant" [nzPageIndex]="1" [nzTotal]="totalRows" [nzPageSizeOptions]="[50,100,150]"
-        nzSize="middle" nzShowSizeChanger [nzPageSize]="50" (nzPageSizeChange)="changePageSize($event)"
-        (nzPageIndexChange)="changePage($event)" [nzShowTotal]="rangeTemplate">
+      <nz-pagination class="pagi-ant" [nzPageIndex]="sortFilter.page" [nzTotal]="totalRows"
+        [nzPageSizeOptions]="[50,100,150]" nzSize="middle" nzShowSizeChanger [nzPageSize]="50"
+        (nzPageSizeChange)="changePageSize($event)" (nzPageIndexChange)="changePage($event)">
       </nz-pagination>
       <ng-template #totalTemplate let-totalRows> Total {{ totalRows }} items </ng-template>
       <ng-template #rangeTemplate let-range="range" let-totalRows>
         {{ range[0] }}-{{ range[1] }} of {{ totalRows }} items
       </ng-template>
     </div>
-
   </div>
 </div>
+<app-add-user [isVisible]="isVisible" (returnIsVisible)="closeModalAdd($event)" (value)="addUser($event)">
+</app-add-user>
+<app-edit-user [isVisibleEdit]="isVisibleEdit" (value)="editUser($event)"
+  (returnIsVisibleEdit)="closeModalEdit($event)"></app-edit-user>

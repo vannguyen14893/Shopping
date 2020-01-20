@@ -2,7 +2,6 @@ import { MenuRoleModule } from './metrix/menu-role/menu-role.module';
 
 
 import { RoleModule } from './role/role.module';
-import { SettingService } from './setting.service';
 import { SettingRoutingModule } from './setting-routing.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -13,6 +12,7 @@ import { PermissionRoleModule } from './metrix/permission-role/permission-role.m
 import { UserRoleModule } from './metrix/user-role/user-role.module';
 import { NotifierService } from 'angular-notifier';
 
+import { SettingService } from './setting.service';
 @NgModule({
   imports: [
     CommonModule,

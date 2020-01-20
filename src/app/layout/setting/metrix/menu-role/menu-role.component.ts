@@ -1,9 +1,9 @@
 import { OnDestroy } from '@angular/core';
 import { Role } from './../../../../model/role.class';
 import { Menu } from './../../../../model/menu.class';
-import { SettingService } from './../../setting.service';
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { SettingService } from '../../setting.service';
 
 @Component({
   selector: 'app-menu-role',

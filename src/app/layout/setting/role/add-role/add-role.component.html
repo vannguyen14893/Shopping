@@ -1,0 +1,14 @@
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Add Role" nzOkText="Ok" nzCancelText="Cancel" (nzOnOk)="handleOk()"
+  (nzOnCancel)="handleCancel()">
+  <div class="role">
+    <div class="input-wrap-name">
+      <span class="span-name">Role Name</span>
+      <input nz-input placeholder="Name" [(ngModel)]="role.roleName" />
+    </div>
+    <div class="input-wrap-description">
+      <span class="span-description">Description</span>
+      <textarea class="form-control" placeholder="description" [(ngModel)]="role.description"></textarea>
+    </div>
+  </div>
+</nz-modal>

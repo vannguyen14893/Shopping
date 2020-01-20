@@ -1,28 +1,52 @@
-<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-    Open modal
-</button> -->
+<nz-modal [(nzVisible)]="isVisibleEdit" nzTitle="Update User" nzOkText="Ok" nzCancelText="Cancel" (nzOnOk)="handleOk()"
+  (nzOnCancel)="handleCancel()" nzWidth="700px">
+  <form [formGroup]="checkoutForm">
 
-<!-- The Modal -->
-<div class="modal fade" id="myModal">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Edit User</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-
-            <!-- Modal body -->
-            <div class="modal-body">
-                
-            </div>
-
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            </div>
-
-        </div>
+    <div class="row" style="margin-bottom: 30px;">
+      <div class="col-md-6" style="display: flex;">
+        <span style="margin-right: 10px;">Email:</span>
+        <input nz-input placeholder="Name" formControlName="email" nzSize="default" style="display: inline-block;" />
+      </div>
+      <div class="col-md-6" style="display: flex;">
+        <span style="margin-right: 10px;">Mobile:</span>
+        <input nz-input placeholder="Mobile" formControlName="mobile" nzSize="default" style="display: inline-block;" />
+      </div>
     </div>
-</div>
+    <div class="row" style="margin-bottom: 30px;">
+      <div class="col-md-6" style="display: flex;">
+        <span style="margin-right: 7px;">Name:</span>
+        <input nz-input placeholder="Name" formControlName="fullName" nzSize="default" style="display: inline-block;" />
+      </div>
+      <div class="col-md-6" style="display: flex;">
+        <span style="margin-right: 2px;">BirthDay:</span>
+        <nz-date-picker formControlName="birthDay" style="display: inline-block;">
+        </nz-date-picker>
+      </div>
+    </div>
+    <div class="row" style="margin-bottom: 30px;">
+      <div class="col-md-6" style="display: flex;">
+        <span style="margin-right: 27px;">Sex:</span>
+        <nz-radio-group formControlName="sex">
+          <label nz-radio nzValue="0">Male</label>
+          <label nz-radio nzValue="1">Female</label>
+        </nz-radio-group>
+      </div>
+      <div class="col-md-6" style="display: flex;">
+        <span style="margin-right: 30px;">Age:</span>
+        <nz-input-number [nzMin]="1" formControlName="age" [nzMax]="150" [nzStep]="1"></nz-input-number>
+      </div>
+    </div>
+    <div class="row" style="margin-bottom: 30px;">
+      <div class="col-md-8" style="display: flex;">
+        <span style="margin-right: 15px;">Role:</span>
+        <nz-select [(ngModel)]="multipleValue" [ngModelOptions]="{standalone: true}" [nzSize]="size" nzMode="multiple"
+          nzPlaceHolder="Please select">
+          <nz-option *ngFor="let option of listOfOptionRole" [nzLabel]="option.label" [nzValue]="option.value">
+          </nz-option>
+        </nz-select>
+      </div>
+      <div class="col-md-4" style="display: flex;">
+      </div>
+    </div>
+  </form>
+</nz-modal>

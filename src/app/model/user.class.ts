@@ -1,3 +1,5 @@
+import { Role } from './role.class';
+
 export class User {
   id: number;
   fullName: string;
@@ -8,6 +10,10 @@ export class User {
   roleName: string;
   isSelected = false;
   age: number;
-  sex: boolean;
+  sex: number;
   password: string;
+  roleIds: [];
+  roles: Role[];
+  avatar: string;
+  count: number;
 }

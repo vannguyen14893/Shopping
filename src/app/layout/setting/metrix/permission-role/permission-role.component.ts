@@ -1,6 +1,6 @@
+import { SettingService } from './../../setting.service';
 import { Privilege } from './../../../../model/privilege.class';
 import { Role } from './../../../../model/role.class';
-import { SettingService } from './../../setting.service';
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';

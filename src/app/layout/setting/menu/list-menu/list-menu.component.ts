@@ -1,8 +1,9 @@
-import { SettingService } from './../../setting.service';
+
 import { Menu } from './../../../../model/menu.class';
 
 import { Component, OnInit } from '@angular/core';
 import { Data } from '@angular/router';
+import { SettingService } from '../../setting.service';
 
 @Component({
   selector: 'app-menu-list',

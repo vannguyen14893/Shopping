@@ -14,7 +14,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
 import * as AllIcons from '@ant-design/icons-angular/icons';
 import { IconDefinition } from '@ant-design/icons-angular';
-
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { reducer } from '../app/error/global-error-reducer';
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
 };
@@ -35,6 +38,11 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     ReactiveFormsModule,
     AutoCompleteModule,
     NgZorroAntdModule,
+    EffectsModule.forRoot([]),
+    StoreModule.forRoot({
+      error: reducer
+    }),
+    StoreDevtoolsModule.instrument(),
     NotifierModule.withConfig({
       position: {
         horizontal: {
@@ -59,7 +67,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
 
   ],
 
-  providers: [{ provide: NZ_I18N, useValue: en_US },{
+  providers: [{ provide: NZ_I18N, useValue: en_US }, {
     provide: HTTP_INTERCEPTORS,
     useClass: HttpErrorInterceptor,
     multi: true
